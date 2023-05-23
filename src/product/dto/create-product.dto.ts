@@ -10,4 +10,12 @@ export class ProductDto {
     @ApiProperty()
     @IsNumber()
     price: number;
+
+    @ApiProperty()
+    @IsNumber()
+    quantity: number;
+
+    @ApiProperty()
+    description: string;
+
 }

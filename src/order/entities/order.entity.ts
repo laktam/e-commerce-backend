@@ -16,8 +16,6 @@ export class Order {
     @Min(0)
     @Column({ default: 1, })
     quantity: number;
-
-
 }
 
 // , {

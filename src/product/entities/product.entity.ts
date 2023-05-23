@@ -16,6 +16,9 @@ export class Product {
     @Column({ default: 0 })
     quantity: number;
 
+
+    @Column()
+    description: string;
     // @ManyToMany(() => Cart, (cart) => cart.products)
     // carts: Cart[]
 
