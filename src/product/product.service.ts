@@ -34,8 +34,8 @@ export class ProductService {
             image.name = file.originalname;
             image.content = file.buffer;
             return image;
-          });
-          
+        });
+
         product.images = images;
         // const prd = await this.productsRepo.save(product)
         // images.forEach((image) => {
@@ -57,15 +57,20 @@ export class ProductService {
     }
 
     async findOne(productId: number) {
-        return await this.productsRepo.findOneBy({
-            id: productId,
+        const res = await this.productsRepo.findOne({
+            relations: ['images'],
+            where: {
+                id: productId
+            }
         }
         )
+        return res
+
     }
 
     async findAll() {
         return await this.productsRepo.find({
-            relations:['images']
+            relations: ['images']
         })
     }
 
