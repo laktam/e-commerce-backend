@@ -38,11 +38,13 @@ export class OrderService {
 
 
     async delOrder(orderId: number) {
-        const order = await this.ordersRepo.findOneBy({
-            id: orderId,
-        })
-        await this.ordersRepo.delete(order)
-        return 'order deleted'
+        // const order = await this.ordersRepo.findOne({
+        //     where: {
+        //         id: orderId 
+        //     }
+        // })
+        return await this.ordersRepo.delete(orderId);
+        // return 'order deleted'
     }
 
     async decrementQtt(orderId: number) {

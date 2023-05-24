@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, OneToMany } from 'typeorm';
 import { Min } from 'class-validator';
+import { Image } from './image.entity';
+
 
 @Entity()
 export class Product {
@@ -9,7 +11,7 @@ export class Product {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ default: 0 })
     price: number;
 
     @Min(0)
@@ -17,8 +19,12 @@ export class Product {
     quantity: number;
 
 
-    @Column()
+    @Column({ type: 'text' })
     description: string;
+
+    @OneToMany(() => Image, (image) => image.product,
+        { cascade: true })
+    images: Image[];
     // @ManyToMany(() => Cart, (cart) => cart.products)
     // carts: Cart[]
 

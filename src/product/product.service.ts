@@ -5,18 +5,46 @@ import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { Cart } from 'src/cart/entities/cart.entity';
 import { UpdateProdDto } from './dto/update-product.dts';
+import { Image } from './entities/image.entity';
+
 
 @Injectable()
 export class ProductService {
 
-    constructor(@InjectRepository(Product) private productsRepo: Repository<Product>,) { }
+    constructor(@InjectRepository(Product) private productsRepo: Repository<Product>, @InjectRepository(Product) private imagesRepo: Repository<Image>,) { }
 
-    async create(createProductDto: ProductDto) {
-        const p = new Product()
-        p.name = createProductDto.name
-        p.price = createProductDto.price
-        await this.productsRepo.save(p)
-        return p;
+    async create(files: Array<Express.Multer.File>, product: Product) {
+        // const p = new Product()
+        // p.name = createProductDto.name
+        // p.price = createProductDto.price
+        // await this.productsRepo.save(p)
+        // return p.id;
+
+        // const images = new Array<Image>();
+        // console.log(files);
+        // files.forEach((file) => {
+        //     const image = new Image();
+        //     image.name = file.originalname;
+        //     image.content = new Blob([file.buffer]);
+        //     // console.log(file);
+        //     images.push(image)
+        // })
+        const images = files.map((file) => {
+            const image = new Image();
+            image.name = file.originalname;
+            image.content = file.buffer;
+            return image;
+          });
+          
+        product.images = images;
+        // const prd = await this.productsRepo.save(product)
+        // images.forEach((image) => {
+        //     image.product = prd
+        // })
+        // this.imagesRepo.save(images)
+        console.log(product)
+        await this.productsRepo.save(product)
+        return product
     }
 
     async del(productId: number) {
@@ -36,7 +64,9 @@ export class ProductService {
     }
 
     async findAll() {
-        return await this.productsRepo.find()
+        return await this.productsRepo.find({
+            relations:['images']
+        })
     }
 
     async productQuantity(productId: number) {

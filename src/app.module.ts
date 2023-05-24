@@ -15,6 +15,7 @@ import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { CardModule } from './card/card.module';
 import { Card } from './card/entities/card.entity';
+import { Image } from './product/entities/image.entity';
 
 @Module({
     imports: [TypeOrmModule.forRoot({
@@ -24,13 +25,13 @@ import { Card } from './card/entities/card.entity';
         username: 'root',
         password: '123@abdo',
         database: 'tutorial',
-        entities: [Product, Cart, User, Order, Card],
+        entities: [Product, Cart, User, Order, Card, Image],
         synchronize: true,
     })
         , UserModule
         , CartModule
         , ProductModule
-        , AuthModule, OrderModule, CardModule,
+        , AuthModule, OrderModule, CardModule
 
     ],
     controllers: [AppController],
