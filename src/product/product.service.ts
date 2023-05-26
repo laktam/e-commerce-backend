@@ -84,6 +84,7 @@ export class ProductService {
         return await this.productsRepo.find({
             relations: ['images']
         })
+        //decoding 
     }
 
     async productQuantity(productId: number) {
