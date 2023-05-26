@@ -27,7 +27,7 @@ export class ProductController {
     @ApiOperation({ summary: 'get product by id' })
     @Get('/:productId')
     findOne(@Param('productId') productId: number) {
-        return this.productService.findOne(productId)
+        return this.productService.FEfindOne(productId)
     }
 
     // @ApiBearerAuth()
@@ -52,6 +52,9 @@ export class ProductController {
     @UseInterceptors(FilesInterceptor('files'))
     update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
         const product = JSON.parse(request.body.product) as Product
+        console.log('---------//----------------------');
+        
+        console.log(product)
         return this.productService.update(files, product) 
     }
 
