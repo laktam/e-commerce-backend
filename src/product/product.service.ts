@@ -58,7 +58,6 @@ export class ProductService {
         prd.price = product.price
         prd.quantity = product.quantity
         await this.productsRepo.save(prd)
-        console.log(prd)
         return prd
     }
 
@@ -89,13 +88,11 @@ export class ProductService {
         feproduct.quantity = product.quantity
         const images: FEImage[] = []
 
-        console.log(product.images)
         for (let image of product.images) {
             let feimage = new FEImage()
             feimage.content = Buffer.from(image.content).toString('base64')
             images.push(feimage)
         }
-        console.log(images)
         feproduct.images = images
         return feproduct
 

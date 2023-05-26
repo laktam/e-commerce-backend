@@ -160,12 +160,8 @@ export class CartService {
                     id: cartId,
                 }
             })
-        console.log(cart);
         return cart.orders
-        // const cart = await this.cartsRepo.findOneBy({
-        //     id: cartId,
-        // })
-        // return  this.orderservice.findByCart(cart)
+
 
     }
 

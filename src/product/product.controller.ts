@@ -51,10 +51,7 @@ export class ProductController {
     @Put('update')
     @UseInterceptors(FilesInterceptor('files'))
     update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
-        const product = JSON.parse(request.body.product) as Product
-        console.log('---------//----------------------');
-        
-        console.log(product)
+        const product = JSON.parse(request.body.product) as Product        
         return this.productService.update(files, product) 
     }
 
