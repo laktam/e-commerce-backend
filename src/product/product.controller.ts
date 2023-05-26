@@ -42,23 +42,17 @@ export class ProductController {
     @Post('create')
     @UseInterceptors(FilesInterceptor('files'))
     add(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
-        // this.productQuantity.add()
-        // const images = new Array<Image>();
-        // console.log(files);
-        // files.forEach((file) => {
-        //     const image = new Image();
-        //     image.name = file.originalname;
-        //     image.content = new Blob([file.buffer]);
-        //     console.log(file);
-
-        // })
         const product = JSON.parse(request.body.product) as Product
-        // const product = new Product()
-        // product.name = prd.name
-        // product.price = prd.price
         console.log(product)
         return this.productService.create(files, product)
-        // product.images = images;
+    }
+
+    @Public()
+    @Put('update')
+    @UseInterceptors(FilesInterceptor('files'))
+    update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
+        const product = JSON.parse(request.body.product) as Product
+        return this.productService.update(files, product) 
     }
 
     @ApiBearerAuth()

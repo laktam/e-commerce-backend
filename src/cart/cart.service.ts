@@ -51,7 +51,7 @@ export class CartService {
         //get product to see if qtt is > 0
         const product = await this.productService.findOne(addProductToCartDto.productId)
         if (product.quantity > 0) {
-            
+
             //if product exist in cart increment order qtt
             for (let o of cart.orders) {
                 if (o.product.id === addProductToCartDto.productId) {
@@ -151,7 +151,9 @@ export class CartService {
             {
                 relations: {
                     orders: {
-                        product: true
+                        product: {
+                            images: true,
+                        }
                     }
                 },
                 where: {

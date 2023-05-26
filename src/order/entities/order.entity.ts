@@ -9,7 +9,7 @@ export class Order {
     id: number;
 
     // @OneToOne(() => Product)
-    @ManyToOne(() => Product)
+    @ManyToOne(() => Product, { onDelete: 'CASCADE' })
     // @JoinColumn()
     product: Product
 
@@ -18,6 +18,6 @@ export class Order {
     quantity: number;
 }
 
-// , { 
+// , {
 //     onDelete: "SET NULL",
 // }

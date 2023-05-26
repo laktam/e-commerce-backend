@@ -14,21 +14,28 @@ export class ProductService {
     constructor(@InjectRepository(Product) private productsRepo: Repository<Product>, @InjectRepository(Product) private imagesRepo: Repository<Image>,) { }
 
     async create(files: Array<Express.Multer.File>, product: Product) {
-        // const p = new Product()
-        // p.name = createProductDto.name
-        // p.price = createProductDto.price
-        // await this.productsRepo.save(p)
-        // return p.id;
 
-        // const images = new Array<Image>();
-        // console.log(files);
-        // files.forEach((file) => {
-        //     const image = new Image();
-        //     image.name = file.originalname;
-        //     image.content = new Blob([file.buffer]);
-        //     // console.log(file);
-        //     images.push(image)
-        // })
+        const images = files.map((file) => {
+            const image = new Image();
+            image.name = file.originalname;
+            image.content = file.buffer;
+            return image;
+        });
+        product.images = images;
+        console.log(product)
+        await this.productsRepo.save(product)
+        return product
+    }
+
+    async update(files: Array<Express.Multer.File>, product: Product) {
+
+        const prd = await this.productsRepo.findOne({
+            relations: ['images'],
+            where: {
+                id: product.id
+            }
+        })
+
         const images = files.map((file) => {
             const image = new Image();
             image.name = file.originalname;
@@ -36,15 +43,20 @@ export class ProductService {
             return image;
         });
 
-        product.images = images;
-        // const prd = await this.productsRepo.save(product)
-        // images.forEach((image) => {
-        //     image.product = prd
-        // })
-        // this.imagesRepo.save(images)
-        console.log(product)
-        await this.productsRepo.save(product)
-        return product
+        // product.images = images;
+        // console.log(product)
+        // console.log(prd)
+        // console.log('**************************')
+        if (images.length !== 0) {
+            prd.images = images
+        }
+        prd.description = product.description
+        prd.name = product.name
+        prd.price = product.price
+        prd.quantity = product.quantity
+        await this.productsRepo.save(prd)
+        console.log(prd)
+        return prd
     }
 
     async del(productId: number) {
@@ -57,14 +69,14 @@ export class ProductService {
     }
 
     async findOne(productId: number) {
-        const res = await this.productsRepo.findOne({
+        const product = await this.productsRepo.findOne({
             relations: ['images'],
             where: {
                 id: productId
             }
         }
         )
-        return res
+        return product
 
     }
 
@@ -104,11 +116,7 @@ export class ProductService {
         const product = await this.productsRepo.findOneBy({
             id: productId,
         })
-        //added <------------------------------------------------
-        // if(product.quantity === 0){
-        //     return 0
-        // }
-        //added <------------------------------------------------
+      
         product.quantity -= 1
         await this.productsRepo.save(product)
         return product.quantity
