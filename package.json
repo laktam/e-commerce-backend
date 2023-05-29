@@ -20,7 +20,8 @@
         "schema:drop": "npm run typeorm -- schema:drop",
         "migration:run": "npm run typeorm -- migration:run",
         "migration:generate": "npm run typeorm -- migration:generate",
-        "typeorm": ""
+        "db:diagram": "typeorm-uml ormconfig.json",
+        "uml-diagram": "ts-node src/generate-uml.ts"
     },
     "dependencies": {
         "@nestjs/common": "^9.0.0",
@@ -36,7 +37,8 @@
         "mysql2": "^3.3.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.5.5",
-        "typeorm": "^0.3.15"
+        "typeorm": "^0.3.15",
+        "typeorm-uml": "^1.6.5"
     },
     "devDependencies": {
         "@nestjs/cli": "^9.0.0",

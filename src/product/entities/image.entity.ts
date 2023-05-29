@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
-import { Min } from 'class-validator';
 import { Product } from './product.entity';
 
 
@@ -18,7 +17,7 @@ export class Image {
         onDelete: 'CASCADE'
     })
     product: Product
-
+}
     // @ManyToMany(() => Cart, (cart) => cart.products)
     // carts: Cart[]
 
@@ -28,7 +27,7 @@ export class Image {
     //     onDelete: "SET NULL", // 
     // })
     // cart: Cart
-}
+
 // {
 //     onDelete: "CASCADE", //
 // }

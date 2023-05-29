@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Min } from 'class-validator';
 import { Image } from './image.entity';
 
@@ -25,16 +25,17 @@ export class Product {
     @OneToMany(() => Image, (image) => image.product,
         { cascade: true })
     images: Image[];
+}
     // @ManyToMany(() => Cart, (cart) => cart.products)
     // carts: Cart[]
 
     // () => Cart: specifies the type of the related entity
 
     // @ManyToOne(() => Cart, (cart) => cart.products, {
-    //     onDelete: "SET NULL", // 
+    //     onDelete: "SET NULL", //
     // })
     // cart: Cart
-}
+
 // {
 //     onDelete: "CASCADE", // 
 // }

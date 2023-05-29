@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Order } from 'src/order/entities/order.entity';
 import { Min } from 'class-validator';
 
@@ -19,12 +19,12 @@ export class Cart {
     @JoinTable()
     orders: Order[];
 
-    // @ManyToMany(() => Product, {
-    //     cascade: true,//when saving a cart the products will be saved 
+
+}
+
+// @ManyToMany(() => Product, {
+    //     cascade: true,//when saving a cart the products will be saved
     // })
     // @JoinTable()
     // products: Product[];
-}
-
-
     // @OneToMany(() => Product, (product) => product.cart,)

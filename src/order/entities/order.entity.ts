@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "../../product/entities/product.entity";
 import { Min } from "class-validator";
 
@@ -8,9 +8,7 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @OneToOne(() => Product)
-    @ManyToOne(() => Product, { onDelete: 'CASCADE' })
-    // @JoinColumn()
+    @ManyToOne(() => Product, { onDelete: 'CASCADE' })//when a product is deleted all the orders referensing it will be deleted
     product: Product
 
     @Min(0)

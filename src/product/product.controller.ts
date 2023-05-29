@@ -17,6 +17,13 @@ export class ProductController {
 
     ) { }
 
+    @ApiOperation({ summary: 'search product' })
+    @Get('search/:productName')
+    @Public()
+    findByName(@Param('productName') productName: string,) {
+        return this.productService.findByName(productName)
+    }
+
     @ApiOperation({ summary: 'get all product' })
     @Get('all')
     @Public()
@@ -51,8 +58,8 @@ export class ProductController {
     @Put('update')
     @UseInterceptors(FilesInterceptor('files'))
     update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
-        const product = JSON.parse(request.body.product) as Product        
-        return this.productService.update(files, product) 
+        const product = JSON.parse(request.body.product) as Product
+        return this.productService.update(files, product)
     }
 
     @ApiBearerAuth()

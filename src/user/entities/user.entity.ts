@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Cart } from '../../cart/entities/cart.entity';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 @Entity()
 export class User {
@@ -14,17 +13,12 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @IsNotEmpty()
     @Column()
     name: string;
 
-    // @IsNotEmpty()
-    @MinLength(6)
     @Column()
     password: string;
 
-    // @IsNotEmpty()
-    // @IsEmail()
     @Column()
     email: string;
 

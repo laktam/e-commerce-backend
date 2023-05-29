@@ -16,11 +16,7 @@ export class Card {
     @Column({ type: 'date' })
     expirationDate: Date;
 
-    // @Column()
-    // expirationDate: Date;
-
     @Column()
     cvv: string;
-
 
 }

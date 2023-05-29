@@ -30,6 +30,19 @@ export class ProductService {
         return product
     }
 
+    async findByName(productName: string) {
+        const products = await this.productsRepo.find({
+            relations: ['images']
+        })
+        const results = products.filter(
+            (product) => {
+                return product.name.toLowerCase().includes(productName.toLowerCase())
+            })
+
+        //to base64 encoding
+        return this.encodeProducts(results)
+    }
+
     async update(files: Array<Express.Multer.File>, product: Product) {
 
         const prd = await this.productsRepo.findOne({
@@ -116,6 +129,27 @@ export class ProductService {
             relations: ['images']
         })
         //images to base64
+        // const feProducts = []
+        // for (let product of products) {
+        //     let feproduct = new FEProduct()
+        //     feproduct.id = product.id
+        //     feproduct.description = product.description
+        //     feproduct.name = product.name
+        //     feproduct.price = product.price
+        //     feproduct.quantity = product.quantity
+        //     const images: FEImage[] = []
+        //     let feimage = new FEImage()
+        //     for (let image of product.images) {
+        //         feimage.content = Buffer.from(image.content).toString('base64')
+        //         images.push(feimage)
+        //     }
+        //     feproduct.images = images
+        //     feProducts.push(feproduct)
+        // }
+        return this.encodeProducts(products)
+    }
+
+    encodeProducts(products: Product[]) {
         const feProducts = []
         for (let product of products) {
             let feproduct = new FEProduct()
