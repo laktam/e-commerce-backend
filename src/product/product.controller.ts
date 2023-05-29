@@ -31,6 +31,14 @@ export class ProductController {
         return this.productService.findAll()
     }
 
+    @ApiOperation({ summary: 'get all categories with products' })
+    @Get('categories')
+    @Public()
+    allCategories() {
+        return this.productService.allCategories()
+    }
+
+
     @ApiOperation({ summary: 'get product by id' })
     @Get('/:productId')
     findOne(@Param('productId') productId: number) {

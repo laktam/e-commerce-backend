@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Min } from 'class-validator';
 import { Image } from './image.entity';
+import { Category } from './category.entity';
 
 
 @Entity()
@@ -25,6 +26,9 @@ export class Product {
     @OneToMany(() => Image, (image) => image.product,
         { cascade: true })
     images: Image[];
+
+    @ManyToOne(() => Category, (category) => category.products)
+    category: Category;
 }
     // @ManyToMany(() => Cart, (cart) => cart.products)
     // carts: Cart[]

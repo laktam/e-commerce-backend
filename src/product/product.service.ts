@@ -9,12 +9,16 @@ import { Image } from './entities/image.entity';
 import { FEProduct } from './entities/product.frontend';
 import { FEImage } from './entities/image.frontend';
 import { Buffer } from 'buffer';
+import { Category } from './entities/category.entity';
 
 
 @Injectable()
 export class ProductService {
 
-    constructor(@InjectRepository(Product) private productsRepo: Repository<Product>, @InjectRepository(Product) private imagesRepo: Repository<Image>,) { }
+    constructor(@InjectRepository(Product) private productsRepo: Repository<Product>,
+        @InjectRepository(Product) private imagesRepo: Repository<Image>,
+        @InjectRepository(Category) private categoriesRepo: Repository<Category>
+    ) { }
 
     async create(files: Array<Express.Multer.File>, product: Product) {
 
@@ -82,6 +86,39 @@ export class ProductService {
         await this.productsRepo.remove(p)
         return p
     }
+
+
+    async allCategories() {
+        const categories = await this.categoriesRepo.find({
+            relations: {
+                products: {
+                    images: true,
+                }
+            },
+        })
+        const cats: Category[] = []
+        for (let cat of categories) {
+            cat.products = this.encodeProducts(cat.products)
+            cats.push(cat)
+        }
+        return cats
+    }
+
+    async findByCategory(categoryName: string) {
+        const category = await this.categoriesRepo.findOne({
+            relations: {
+                products: {
+                    images: true,
+                }
+            },
+            where: {
+                name: categoryName,
+            }
+        })
+        category.products = this.encodeProducts(category.products)
+        return category
+    }
+
 
 
     async FEfindOne(productId: number) {
