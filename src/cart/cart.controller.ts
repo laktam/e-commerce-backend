@@ -4,6 +4,7 @@ import { CartService } from './cart.service';
 import { ProductService } from 'src/product/product.service';
 import { ApiBearerAuth, ApiExcludeController, ApiExcludeEndpoint, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AddProductToCartDto, UpdateOrderInCartDto } from './dto/update-cart.dto';
+import { Public } from 'src/auth/public.decorator';
 
 @ApiBearerAuth()
 @ApiTags('Cart')
@@ -48,6 +49,8 @@ export class CartController {
     @ApiParam({ name: 'orderId', type: Number })
     @Delete('delOrder/:cartId/:orderId')
     delOrder(@Param('cartId') cartId, @Param('orderId') orderId) {
+        console.log('deleting start')
+        
         return this.cartService.delOrder(cartId, orderId)
     }
 
@@ -78,7 +81,8 @@ export class CartController {
     // }
 
     @ApiOperation({ summary: 'get all orders in the cart' })
-    @ApiBearerAuth()
+    // @ApiBearerAuth()
+    @Public()
     @ApiParam({ name: 'cartId', type: Number })
     @Get('all/:cartId')
     findByCart(@Param('cartId') cartId) {

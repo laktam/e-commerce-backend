@@ -11,7 +11,7 @@ export class Image {
     name: string;
 
     @Column({ type: 'longblob' })
-    content: Buffer;
+    content: Buffer|string;
 
     @ManyToOne(() => Product, (product) => product.images, {
         onDelete: 'CASCADE'

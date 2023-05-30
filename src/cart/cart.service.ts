@@ -5,6 +5,9 @@ import { Cart } from './entities/cart.entity';
 import { ProductService } from 'src/product/product.service';
 import { OrderService } from 'src/order/order.service';
 import { AddProductToCartDto, UpdateOrderInCartDto } from './dto/update-cart.dto';
+import { Order } from 'src/order/entities/order.entity';
+import { FEProduct } from 'src/product/entities/product.frontend';
+import { FEImage } from 'src/product/entities/image.frontend';
 
 @Injectable()
 export class CartService {
@@ -89,7 +92,11 @@ export class CartService {
         const cart = await this.cartsRepo.findOne({
             relations: {
                 orders: {
-                    product: true
+                    // product: true
+                    product: {
+                        category: true,
+                        images: true,
+                    }
                 }
             },
             where: {
@@ -105,6 +112,7 @@ export class CartService {
             cart.quantity -= 1
             await this.cartsRepo.save(cart)
             await this.productService.incrementProductQtt(order.product.id)
+            console.log('deleting ends *****')
             return await this.orderService.decrementQtt(orderId)
 
         } else {
@@ -116,6 +124,7 @@ export class CartService {
             //deleting the order object
             await this.orderService.delOrder(orderId)
             await this.productService.incrementProductQtt(order.product.id)
+            console.log('deleting ends *****')
             return 0
         }
     }
@@ -160,9 +169,38 @@ export class CartService {
                     id: cartId,
                 }
             })
+        cart.orders = this.encodeOrders(cart.orders)
         return cart.orders
 
 
+    }
+
+
+    // encodeProducts(products: Product[]) {
+    encodeOrders(orders: Order[]) {
+        const encodedOrders = orders.map(
+            (order) => {
+                for (let image of order.product.images) {
+                    image.content = Buffer.from(image.content).toString('base64')
+                }
+                return order
+            }
+        )
+        // for (let order of orders) {
+
+        //     // let feproduct = new FEProduct()
+        //     // feproduct.id = order.product.id
+        //     // feproduct.description = order.product.description
+        //     // feproduct.name = order.product.name
+        //     // feproduct.price = order.product.price
+        //     // feproduct.quantity = order.product.quantity
+        //     // const images: FEImage[] = []
+        //     // let feimage = new FEImage()
+        //     for (let image of order.product.images) {
+        //         image.content = Buffer.from(image.content).toString('base64')
+        //     }
+        // }
+        return encodedOrders
     }
 
     async updateOrder(updateOrderInCartDto: UpdateOrderInCartDto) {
