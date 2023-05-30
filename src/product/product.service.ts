@@ -20,7 +20,7 @@ export class ProductService {
         @InjectRepository(Category) private categoriesRepo: Repository<Category>
     ) { }
 
-    async create(files: Array<Express.Multer.File>, product: Product) {
+    async create(files: Array<Express.Multer.File>, product: Product, cat: string) {
 
         const images = files.map((file) => {
             const image = new Image();
@@ -28,6 +28,13 @@ export class ProductService {
             image.content = file.buffer;
             return image;
         });
+        const category = await this.categoriesRepo.findOne({
+            relations: ['products'],
+            where: {
+                name: cat,
+            }
+        }) 
+        product.category = category
         product.images = images;
         console.log(product)
         await this.productsRepo.save(product)
@@ -47,14 +54,22 @@ export class ProductService {
         return this.encodeProducts(results)
     }
 
-    async update(files: Array<Express.Multer.File>, product: Product) {
+    async update(files: Array<Express.Multer.File>, product: Product, cat: string) {
 
         const prd = await this.productsRepo.findOne({
-            relations: ['images'],
+            relations: ['images', 'category'],
             where: {
                 id: product.id
             }
         })
+
+        const category = await this.categoriesRepo.findOne({
+            relations: ['products'],
+            where: {
+                name: cat
+            }
+        }
+        )
 
         const images = files.map((file) => {
             const image = new Image();
@@ -74,6 +89,7 @@ export class ProductService {
         prd.name = product.name
         prd.price = product.price
         prd.quantity = product.quantity
+        prd.category = category
         await this.productsRepo.save(prd)
         return prd
     }
@@ -123,7 +139,7 @@ export class ProductService {
 
     async FEfindOne(productId: number) {
         const product = await this.productsRepo.findOne({
-            relations: ['images'],
+            relations: ['images', 'category'],//<------------------------------------------------||
             where: {
                 id: productId
             }
@@ -136,6 +152,7 @@ export class ProductService {
         feproduct.name = product.name
         feproduct.price = product.price
         feproduct.quantity = product.quantity
+        feproduct.category = product.category
         const images: FEImage[] = []
 
         for (let image of product.images) {
@@ -250,5 +267,15 @@ export class ProductService {
         product.quantity += 1
         await this.productsRepo.save(product)
         return product.quantity
+    }
+
+    //this returns strings
+    async getCategories() {
+        const names = []
+        const categories = await this.categoriesRepo.find()
+        for (let category of categories) {
+            names.push(category.name)
+        }
+        return names
     }
 }

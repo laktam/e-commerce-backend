@@ -1,3 +1,4 @@
+import { Category } from './category.entity';
 import { FEImage } from './image.frontend'
 
 export class FEProduct {
@@ -10,7 +11,9 @@ export class FEProduct {
 
     quantity: number;
 
-
     description: string;
+
     images: FEImage[];
+
+    category: Category;
 }

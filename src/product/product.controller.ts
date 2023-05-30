@@ -38,12 +38,21 @@ export class ProductController {
         return this.productService.allCategories()
     }
 
+    @ApiOperation({ summary: 'get list of category names' })
+    @Get('catNames')
+    @Public()
+    getCategories() {
+        return this.productService.getCategories()
+    }
 
     @ApiOperation({ summary: 'get product by id' })
     @Get('/:productId')
     findOne(@Param('productId') productId: number) {
         return this.productService.FEfindOne(productId)
     }
+
+
+
 
     // @ApiBearerAuth()
     // @ApiOperation({ summary: 'create a product' })
@@ -59,7 +68,7 @@ export class ProductController {
     add(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
         const product = JSON.parse(request.body.product) as Product
         console.log(product)
-        return this.productService.create(files, product)
+        return this.productService.create(files, product,request.body.category)
     }
 
     @Public()
@@ -67,7 +76,9 @@ export class ProductController {
     @UseInterceptors(FilesInterceptor('files'))
     update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
         const product = JSON.parse(request.body.product) as Product
-        return this.productService.update(files, product)
+        console.log(request.body.category);
+
+        return this.productService.update(files, product, request.body.category)
     }
 
     @ApiBearerAuth()
