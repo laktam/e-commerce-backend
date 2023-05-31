@@ -24,7 +24,8 @@ export class ProductController {
         return this.productService.findByName(productName)
     }
 
-    @ApiOperation({ summary: 'get all product' })
+    //doesn't return images
+    @ApiOperation({ summary: 'get all product (with no images)' })
     @Get('all')
     @Public()
     findAll() {
@@ -68,7 +69,7 @@ export class ProductController {
     add(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
         const product = JSON.parse(request.body.product) as Product
         console.log(product)
-        return this.productService.create(files, product,request.body.category)
+        return this.productService.create(files, product, request.body.category)
     }
 
     @Public()
@@ -104,7 +105,11 @@ export class ProductController {
         return this.productService.updateProductQtt(prod)
     }
 
-
+    @ApiOperation({ summary: 'add category' })
+    @Post('addCategory')
+    addCategory(@Body() category: { categoryName: string }) {
+        return this.productService.addCategory(category.categoryName)
+    }
     // @ApiOperation({ summary: 'get all products in the cart' })
     // @ApiBearerAuth()
     // @Get()

@@ -33,7 +33,7 @@ export class ProductService {
             where: {
                 name: cat,
             }
-        }) 
+        })
         product.category = category
         product.images = images;
         console.log(product)
@@ -178,9 +178,16 @@ export class ProductService {
 
     }
 
+    async addCategory(categoryName: string) {
+        const cat = new Category()
+        cat.name = categoryName
+        return await this.categoriesRepo.save(cat)
+    }
+
+    //doesn't return images
     async findAll() {
         const products = await this.productsRepo.find({
-            relations: ['images']
+            // relations: ['images']
         })
         //images to base64
         // const feProducts = []
@@ -200,7 +207,8 @@ export class ProductService {
         //     feproduct.images = images
         //     feProducts.push(feproduct)
         // }
-        return this.encodeProducts(products)
+        return products
+        // return this.encodeProducts(products)
     }
 
     encodeProducts(products: Product[]) {
