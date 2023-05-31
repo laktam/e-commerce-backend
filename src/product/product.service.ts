@@ -187,7 +187,7 @@ export class ProductService {
     //doesn't return images
     async findAll() {
         const products = await this.productsRepo.find({
-            // relations: ['images']
+             relations: ['category']
         })
         //images to base64
         // const feProducts = []
