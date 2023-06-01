@@ -40,4 +40,11 @@ export class UserController {
     total(@Param('userId') userId) {
         return this.userService.total(userId)
     }
+
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'get all users' })
+    @Get('all')
+    allUsers() {
+        return this.userService.getAll()
+    }
 }

@@ -46,6 +46,7 @@ export class ProductController {
         return this.productService.getCategories()
     }
 
+    @Public()
     @ApiOperation({ summary: 'get product by id' })
     @Get('/:productId')
     findOne(@Param('productId') productId: number) {

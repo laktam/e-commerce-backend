@@ -29,7 +29,7 @@ export class UserService {
 
             //create a cart and asign it to user
             u.cart = await this.cartService.create()
-            
+
             await this.usersRepo.save(u);
             return u;
         } else {
@@ -90,5 +90,17 @@ export class UserService {
             }
         })
         return user.cart.id
+    }
+
+    async getAll() {
+        return await this.usersRepo.find({
+            relations: {
+                cart: {
+                    orders: {
+                        product:true
+                    }
+                }
+            }
+        })
     }
 }
