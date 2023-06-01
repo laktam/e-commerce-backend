@@ -10,14 +10,16 @@ import { FEProduct } from './entities/product.frontend';
 import { FEImage } from './entities/image.frontend';
 import { Buffer } from 'buffer';
 import { Category } from './entities/category.entity';
+import { Comment } from './entities/comment.entity';
 
 
 @Injectable()
 export class ProductService {
 
     constructor(@InjectRepository(Product) private productsRepo: Repository<Product>,
-        @InjectRepository(Product) private imagesRepo: Repository<Image>,
-        @InjectRepository(Category) private categoriesRepo: Repository<Category>
+        @InjectRepository(Image) private imagesRepo: Repository<Image>,
+        @InjectRepository(Category) private categoriesRepo: Repository<Category>,
+        @InjectRepository(Comment) private commentsRepo: Repository<Comment>
     ) { }
 
     async create(files: Array<Express.Multer.File>, product: Product, cat: string) {
@@ -139,7 +141,7 @@ export class ProductService {
 
     async FEfindOne(productId: number) {
         const product = await this.productsRepo.findOne({
-            relations: ['images', 'category'],//<------------------------------------------------||
+            relations: ['images', 'category', 'comments'],//<------------------------------------------------||
             where: {
                 id: productId
             }
@@ -153,6 +155,7 @@ export class ProductService {
         feproduct.price = product.price
         feproduct.quantity = product.quantity
         feproduct.category = product.category
+        feproduct.comments = product.comments
         const images: FEImage[] = []
 
         for (let image of product.images) {
@@ -187,7 +190,7 @@ export class ProductService {
     //doesn't return images
     async findAll() {
         const products = await this.productsRepo.find({
-             relations: ['category']
+            relations: ['category']
         })
         //images to base64
         // const feProducts = []
@@ -285,5 +288,24 @@ export class ProductService {
             names.push(category.name)
         }
         return names
+    }
+
+    //-----------Cemment---------------------------
+    async addComment(addCommentDto: { productId: number, comment: string ,username:string}) {
+        const product = await this.productsRepo.findOne({
+            relations: ['comments'],
+            where: {
+                id: addCommentDto.productId
+            }
+        })
+
+        const comment = new Comment()
+        comment.content = addCommentDto.comment
+        comment.username = addCommentDto.username
+        product.comments.push(comment)
+        await this.productsRepo.save(product)
+        console.log(product);
+        return product
+
     }
 }

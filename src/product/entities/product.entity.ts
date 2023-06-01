@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'ty
 import { Min } from 'class-validator';
 import { Image } from './image.entity';
 import { Category } from './category.entity';
-
+import { Comment } from './comment.entity'
 
 @Entity()
 export class Product {
@@ -26,6 +26,10 @@ export class Product {
     @OneToMany(() => Image, (image) => image.product,
         { cascade: true })
     images: Image[];
+
+    @OneToMany(() => Comment, (comment) => comment.product,
+        { cascade: true })//when saving product the comments will be saved too
+    comments: Comment[];
 
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;

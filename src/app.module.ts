@@ -17,6 +17,7 @@ import { CardModule } from './card/card.module';
 import { Card } from './card/entities/card.entity';
 import { Image } from './product/entities/image.entity';
 import { Category } from './product/entities/category.entity';
+import { Comment } from './product/entities/comment.entity';
 
 @Module({
     imports: [TypeOrmModule.forRoot({
@@ -26,7 +27,7 @@ import { Category } from './product/entities/category.entity';
         username: 'root',
         password: '123@abdo',
         database: 'tutorial',
-        entities: [Product, Cart, User, Order, Card, Image, Category],
+        entities: [Product, Cart, User, Order, Card, Image, Category, Comment],
         synchronize: true,
     })
         , UserModule

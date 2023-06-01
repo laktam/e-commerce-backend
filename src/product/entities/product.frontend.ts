@@ -1,4 +1,5 @@
 import { Category } from './category.entity';
+import { Comment } from './comment.entity';
 import { FEImage } from './image.frontend'
 
 export class FEProduct {
@@ -16,4 +17,6 @@ export class FEProduct {
     images: FEImage[];
 
     category: Category;
+
+    comments: Comment[];
 }

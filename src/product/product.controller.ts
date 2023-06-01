@@ -46,12 +46,16 @@ export class ProductController {
         return this.productService.getCategories()
     }
 
-    @Public()
-    @ApiOperation({ summary: 'get product by id' })
-    @Get('/:productId')
-    findOne(@Param('productId') productId: number) {
-        return this.productService.FEfindOne(productId)
+
+    @ApiOperation({ summary: 'add comment' })
+    @Post('comment')
+    addComment(@Body() addCommentDto: { productId: number, comment: string, username: string, }) {
+        console.log("add comment");
+
+        return this.productService.addComment(addCommentDto)
     }
+
+
 
 
 
@@ -117,4 +121,10 @@ export class ProductController {
     // findByCart(cart: Cart) {
 
     // }
+    @Public()
+    @ApiOperation({ summary: 'get product by id' })
+    @Get('/:productId')
+    findOne(@Param('productId') productId: number) {
+        return this.productService.FEfindOne(productId)
+    }
 }
