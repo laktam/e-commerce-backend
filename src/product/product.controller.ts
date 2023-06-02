@@ -55,6 +55,12 @@ export class ProductController {
         return this.productService.addComment(addCommentDto)
     }
 
+    @ApiOperation({ summary: 'get all comments' })
+    @Get('all/comments')
+    getAllComments(){
+        return this.productService.getAllComments()
+    }
+
 
 
 

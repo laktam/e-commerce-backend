@@ -306,6 +306,11 @@ export class ProductService {
         await this.productsRepo.save(product)
         console.log(product);
         return product
+    }
 
+    async getAllComments(){
+        return await this.commentsRepo.find({
+            relations:['product']
+        })
     }
 }
