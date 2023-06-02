@@ -18,11 +18,14 @@ import { Card } from './card/entities/card.entity';
 import { Image } from './product/entities/image.entity';
 import { Category } from './product/entities/category.entity';
 import { Comment } from './product/entities/comment.entity';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
-    imports: [TypeOrmModule.forRoot({
+    imports: [ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
         type: 'mysql',
-        host: 'localhost',
+        host: process.env.DATABASE_URL,
         port: 3306,
         username: 'root',
         password: '123@abdo',
