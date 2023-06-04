@@ -19,7 +19,6 @@ export class Cart {
     @JoinTable()
     orders: Order[];
 
-
 }
 
 // @ManyToMany(() => Product, {
