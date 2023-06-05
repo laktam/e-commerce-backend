@@ -19,6 +19,8 @@ import { Image } from './product/entities/image.entity';
 import { Category } from './product/entities/category.entity';
 import { Comment } from './product/entities/comment.entity';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 
 @Module({
@@ -36,7 +38,11 @@ import { ConfigModule } from '@nestjs/config';
         , UserModule
         , CartModule
         , ProductModule
-        , AuthModule, OrderModule, CardModule
+        , AuthModule, OrderModule, CardModule,
+    ServeStaticModule.forRoot({
+        rootPath: join(__dirname, '..', 'build'),
+        serveRoot: '/',
+    })
 
     ],
     controllers: [AppController],
