@@ -9,7 +9,7 @@ import { Product } from './entities/product.entity';
 import { Image } from './entities/image.entity';
 
 // @ApiBearerAuth()
-@ApiTags('Product')
+@ApiTags('Product, Category, Comment')
 @Controller('product')
 export class ProductController {
     constructor(
@@ -27,7 +27,8 @@ export class ProductController {
     //doesn't return images
     @ApiOperation({ summary: 'get all product (with no images)' })
     @Get('all')
-    @Public()
+    // @Public()
+    @ApiBearerAuth()
     findAll() {
         return this.productService.findAll()
     }
@@ -39,14 +40,14 @@ export class ProductController {
         return this.productService.allCategories()
     }
 
-    @ApiOperation({ summary: 'get list of category names' })
-    @Get('catNames')
-    @Public()
-    getCategories() {
-        return this.productService.getCategories()
-    }
+    // @ApiOperation({ summary: 'get list of category names' })
+    // @Get('catNames')
+    // @Public()
+    // getCategories() {
+    //     return this.productService.getCategories()
+    // }
 
-
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'add comment' })
     @Post('comment')
     addComment(@Body() addCommentDto: { productId: number, comment: string, username: string, }) {
@@ -55,9 +56,10 @@ export class ProductController {
         return this.productService.addComment(addCommentDto)
     }
 
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'get all comments' })
     @Get('all/comments')
-    getAllComments(){
+    getAllComments() {
         return this.productService.getAllComments()
     }
 
@@ -74,7 +76,9 @@ export class ProductController {
     //     // return this.productService.create(product);
     // }
 
-    @Public()
+    @ApiOperation({ summary: 'Create a new Product' })
+    // @Public()
+    @ApiBearerAuth()
     @Post('create')
     @UseInterceptors(FilesInterceptor('files'))
     add(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
@@ -83,7 +87,9 @@ export class ProductController {
         return this.productService.create(files, product, request.body.category)
     }
 
-    @Public()
+    @ApiOperation({ summary: 'Update a product' })
+    // @Public()
+    @ApiBearerAuth()
     @Put('update')
     @UseInterceptors(FilesInterceptor('files'))
     update(@UploadedFiles() files: Array<Express.Multer.File>, @Req() request) {
@@ -102,7 +108,7 @@ export class ProductController {
     }
 
     @Public()
-    @ApiOperation({ summary: 'product quantity' })
+    @ApiOperation({ summary: 'Get product quantity' })
     @ApiParam({ name: 'productId', type: Number })
     @Get('quantity/:productId')
     productQuantity(@Param('productId') productId) {
@@ -116,6 +122,7 @@ export class ProductController {
         return this.productService.updateProductQtt(prod)
     }
 
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'add category' })
     @Post('addCategory')
     addCategory(@Body() category: { categoryName: string }) {

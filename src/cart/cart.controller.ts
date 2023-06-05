@@ -15,13 +15,13 @@ export class CartController {
         , private readonly productService: ProductService
     ) { }
 
-    @ApiOperation({ summary: 'Create new cart' })
+    @ApiOperation({ summary: 'Create a new cart' })
     @Post('create')
     create() {
         return this.cartService.create();
     }
 
-    @ApiOperation({ summary: 'Create new cart' })
+    @ApiOperation({ summary: 'delete a cart' })
     @Delete('delete/:cartId')
     delete(@Param('cartId') cartId: number) {
         return this.cartService.delete(cartId);
