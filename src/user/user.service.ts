@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 // import { Cart } from 'src/cart/entities/cart.entity';
 import { CartService } from 'src/cart/cart.service';
 import { LoginDto } from 'src/auth/dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -15,6 +16,8 @@ export class UserService {
     ) { }
 
     async create(createUserDto: CreateUserDto) {
+
+
         const user = await this.usersRepo.findOne({
             relations: ['cart'],
             where: {
@@ -23,9 +26,10 @@ export class UserService {
         })
         //check name
         if (user === null) {
-            console.log(user);
 
-            const u = new User(createUserDto.name, createUserDto.password, createUserDto.email)
+            const encryptedPass = await bcrypt.hash(createUserDto.password, 10)
+
+            const u = new User(createUserDto.name, encryptedPass, createUserDto.email)
 
             //create a cart and asign it to user
             u.cart = await this.cartService.create()
@@ -77,7 +81,7 @@ export class UserService {
             relations: ['cart'],
             where: {
                 name: loginDto.name,
-                password: loginDto.password
+                // password: loginDto.password
             }
         })
     }
@@ -97,7 +101,7 @@ export class UserService {
             relations: {
                 cart: {
                     orders: {
-                        product:true
+                        product: true
                     }
                 }
             }

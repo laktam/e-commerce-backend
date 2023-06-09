@@ -5,9 +5,9 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy the app package and package-lock.json file
-COPY package*.json ./
+COPY package.json ./
 
-# Install node packages, install serve, build the app, and remove dependencies at the end
+# Install node packages
 RUN npm install --force 
 
 # Copy local directories to the current local directory of our docker image (/app)
@@ -17,5 +17,5 @@ RUN npm run build
 
 EXPOSE 3001
 
-# Start the app using serve command
+
 CMD [ "npm", "run", "start" ]
