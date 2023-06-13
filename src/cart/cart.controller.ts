@@ -49,7 +49,6 @@ export class CartController {
     @ApiParam({ name: 'orderId', type: Number })
     @Delete('delOrder/:cartId/:orderId')
     delOrder(@Param('cartId') cartId, @Param('orderId') orderId) {
-        console.log('deleting start')
         
         return this.cartService.delOrder(cartId, orderId)
     }

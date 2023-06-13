@@ -112,7 +112,6 @@ export class CartService {
             cart.quantity -= 1
             await this.cartsRepo.save(cart)
             await this.productService.incrementProductQtt(order.product.id)
-            console.log('deleting ends *****')
             return await this.orderService.decrementQtt(orderId)
 
         } else {
@@ -124,7 +123,6 @@ export class CartService {
             //deleting the order object
             await this.orderService.delOrder(orderId)
             await this.productService.incrementProductQtt(order.product.id)
-            console.log('deleting ends *****')
             return 0
         }
     }
